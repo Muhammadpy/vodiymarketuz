@@ -1,7 +1,7 @@
 
 
 from email import message
-from sre_constants import SUCCESS
+
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import is_valid_path
@@ -24,6 +24,8 @@ from django.http import HttpResponse
 
 from carts.views import _cart_id
 from carts.models import Cart, CartItem
+import requests
+
 # Create your views here.
 def register(request):
     if request.method=='POST':
@@ -77,25 +79,25 @@ def login(request):
        
         if user is not None:
             try:
-                print('entring ')
+        
                 cart = Cart.objects.get(card_id=_cart_id(request))
                 is_cart_item_exists=CartItem.objects.filter( cart=cart).exists()
-                print(is_cart_item_exists)
                 if is_cart_item_exists:
-                    cart_item=CartItem.objects.filter(cart=cart)
-                    print(cart_item)
-                    for item in cart_item:
-                        item.user=user
-                        item.save()
+                    cart_item = CartItem.objects.filter(cart=cart)
+                    
 
+                    for item in cart_item:
+                        item.user = user.save()
             except:
                 pass
             auth.login(request, user)
+            messages.success(request, "you are logged in")
+            
             return redirect('accounts:dashboard')
         else:
-            messages.error(request, 'invalid user')
+            messages.error(request, 'invalid user')    
             return redirect('accounts:login')
-    return render(request ,'accounts/login.html')
+    return render(request, 'accounts/login.html')
 
 
 @login_required(login_url='login')
