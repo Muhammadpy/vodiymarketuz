@@ -5,6 +5,7 @@ from django.urls import path
 
 from greatkart import views
 from . import views
+app_name = 'carts'
 
 urlpatterns = [
     path('', views.cart, name='cart'),

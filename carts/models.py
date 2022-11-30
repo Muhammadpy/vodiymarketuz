@@ -1,10 +1,7 @@
 from django.db import models
-from numpy import product
+
 from accounts.models import Account
 from store.models import Product, Variation
-
-
-
 from store.models import Product
 
 # Create your models here.

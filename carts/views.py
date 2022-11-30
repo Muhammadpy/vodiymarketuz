@@ -80,7 +80,7 @@ def add_cart(request, product_id):
                 cart_item.variation.clear()
                 cart_item.variation.add(*product_variation)
             cart_item.save()
-        return redirect('cart')
+        return redirect('carts:cart')
         # if user is not authenticated
 
 
@@ -154,7 +154,7 @@ def add_cart(request, product_id):
                 cart_item.variation.clear()
                 cart_item.variation.add(*product_variation)
             cart_item.save()
-        return redirect('cart')
+        return redirect('carts:cart')
 
 
 def remove_cart(request, product_id, cart_item_id):
@@ -176,7 +176,7 @@ def remove_cart(request, product_id, cart_item_id):
             cart_item.delete()
     except:
         pass
-    return redirect('cart')
+    return redirect('carts:cart')
 
 def remove_cart_item(request, product_id, cart_item_id ):
     product = get_object_or_404(Product, id=product_id)
@@ -186,7 +186,7 @@ def remove_cart_item(request, product_id, cart_item_id ):
         cart=Cart.objects.get(card_id=_cart_id(request))
         cart_item= CartItem.objects.get(product=product, cart=cart, id=cart_item_id)
     cart_item.delete()
-    return redirect('cart')
+    return redirect('carts:cart')
 
 
 
@@ -199,14 +199,13 @@ def cart(request, total=0, quantity=0, carts_items=None  ):
         grand_total=0
         if request.user.is_authenticated:
             carts_items=CartItem.objects.filter(user=request.user,  is_active=True)
-            print(carts_items, 'cart ')
+            
         else:
 
             cart= Cart.objects.get(card_id=_cart_id(request))
             carts_items=CartItem.objects.filter(cart=cart, is_active=True)
         for cart_item in carts_items:
-            print("OK shu yerdda")
-            print(carts_items)
+
             total += cart_item.product.Price
             
             quantity+=cart_item.quantity
@@ -215,20 +214,16 @@ def cart(request, total=0, quantity=0, carts_items=None  ):
         grand_total=total + tax
         
     except :ObjectDoesNotExist
+    template = 'store/cart.html'
         
-        
-    
-        
-
-    context ={
+    context = {
         'total':total,
         'quantity': quantity,
         'carts_items':carts_items,
         'tax' : tax,   
-        'grand_total':grand_total,
-        
-    }
-    return render (request, 'store/cart.html', context)
+        'grand_total':grand_total,}
+    
+    return render(request, template , context)
     
 
 
@@ -239,7 +234,7 @@ def checkout(request, total=0, quantity=0, carts_items=None):
         grand_total=0
         if request.user.is_authenticated:
             carts_items=CartItem.objects.filter(user=request.user,  is_active=True)
-            print(carts_items, 'cart ')
+            # print(carts_items, 'cart ')
         else:
 
             cart= Cart.objects.get(card_id=_cart_id(request))
