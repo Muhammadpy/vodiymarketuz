@@ -84,7 +84,7 @@ def place_order(request, total=0, quantity=0,):
     cart_items = CartItem.objects.filter(user=current_user)
     cart_count = cart_items.count()
     if cart_count <= 0:
-        return redirect('store')
+        return redirect('store : store')
 
     grand_total = 0
     tax = 0
@@ -98,19 +98,21 @@ def place_order(request, total=0, quantity=0,):
         form = OrderForm(request.POST)
         print('ikkinchi')
         if form.is_valid():
+            print('uukkinchi')
             # Store all the billing information inside Order table
             print('salom')
             data = Order()
             data.user = current_user
             data.first_name = form.cleaned_data['first_name']
             data.last_name = form.cleaned_data['last_name']
-            data.phone = form.cleaned_data['phone']
             data.email = form.cleaned_data['email']
+            data.phone = form.cleaned_data['phone']
+            
             data.address_line_1 = form.cleaned_data['address_line_1']
             data.address_line_2 = form.cleaned_data['address_line_2']
-            data.country = form.cleaned_data['country']
-            data.state = form.cleaned_data['state']
             data.city = form.cleaned_data['city']
+            data.state = form.cleaned_data['state']
+            data.country = form.cleaned_data['country']
             data.order_note = form.cleaned_data['order_note']
             data.order_total = grand_total
             data.tax = tax
@@ -128,6 +130,7 @@ def place_order(request, total=0, quantity=0,):
             data.save()
 
             order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            print(order)
             context = {
                 'order': order,
                 'cart_items': cart_items,
@@ -135,7 +138,7 @@ def place_order(request, total=0, quantity=0,):
                 'tax': tax,
                 'grand_total': grand_total,
             }     
-            return render(request, 'orders/payments.html', context)
+            return render(request, 'orders/payments.html', context, {})
     else:
         return redirect('carts:checkout')
 
@@ -143,6 +146,7 @@ def place_order(request, total=0, quantity=0,):
 def order_complete(request):
     order_number = request.GET.get('order_number')
     transID = request.GET.get('payment_id')
+    print('ordercomplete')
 
     try:
         order = Order.objects.get(order_number=order_number, is_ordered=True)
@@ -153,6 +157,7 @@ def order_complete(request):
             subtotal += i.product_price * i.quantity
 
         payment = Payment.objects.get(payment_id=transID)
+        print('alo')
 
         context = {
             'order': order,
@@ -162,6 +167,6 @@ def order_complete(request):
             'payment': payment,
             'subtotal': subtotal,
         }
-        return render(request, 'orders/order_complete.html', context)
+        return render(request, 'orders/order_complete.html', context, {})
     except (Payment.DoesNotExist, Order.DoesNotExist):
         return redirect('home')

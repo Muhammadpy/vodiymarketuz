@@ -12,38 +12,38 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title md-4">Billing Address</h4>
-            <form action="{% url 'orders:place_order' %}" method="POST">
+            <form  action="{% url 'orders:place_order' %}" method="POST" enctype="multipart/form-data">
                 {%csrf_token%}
                 <div class="form-row">
                     <div class="col form-grop">
                         <label for="">First Name</label>
-                        <input type="text" name="first name" class="form-control" required >
+                        <input type="text" name="first_name" class="form-control" required >
                     </div>
                     <div class="col form-grop">
                         <label for="">Last Name</label>
-                        <input type="text" name="last name" class="form-control" required >
+                        <input type="text" name="last_name" class="form-control" required >
                     </div>
                     
                 </div>
                 <div class="form-row">
                     <div class="col form-grop">
                         <label for="">Email address</label>
-                        <input type="email" name="email address" class="form-control" required >
+                        <input type="email" name="email" class="form-control" required >
                     </div>
                     <div class="col form-grop">
                         <label for="">Phone number</label>
-                        <input type="text" name="phone number" class="form-control" required >
+                        <input type="text" name="phone" class="form-control" required >
                     </div>
                     
                 </div>
                 <div class="form-row">
                     <div class="col form-grop">
                         <label for="">Address Line1</label>
-                        <input type="text" name="address_line 1" class="form-control" required >
+                        <input type="text" name="address_line_1" class="form-control" required >
                     </div>
                     <div class="col form-grop">
                         <label for="">Address Line 2</label>
-                        <input type="text" name="address_line2" class="form-control" required >
+                        <input type="text" name="address_line_2" class="form-control" required >
                     </div>
                     
                 </div>
@@ -63,7 +63,7 @@
                 </div>
                     <div class="form-row">
                         <label for="" class="for">Order Note</label>
-                        <textarea name="order note" class="form-group" rows="2"></textarea>
+                        <textarea name="order_note" class="form-group" rows="2"></textarea>
                     </div>
                 
 
@@ -126,7 +126,7 @@
     
                 
                 <button type="submit" name="submit" class="btn btn-primary btn-block"> Place order</button>
-                <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
+                <a href="{% url 'store:store' %}" class="btn btn-light btn-block">Continue Shopping</a>
         </form>
 
             </div> <!-- card-body.// -->
