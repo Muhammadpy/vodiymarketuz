@@ -12,6 +12,7 @@ from store.models import Product
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
+import datetime
 
 def payments(request):
     body = json.loads(request.body)
@@ -80,7 +81,7 @@ def payments(request):
 def place_order(request, total=0, quantity=0,):
     current_user = request.user
 
-    # If the cart count is less than or equal to 0, then redirect back to shop
+    # get cart items from current user
     cart_items = CartItem.objects.filter(user=current_user)
     cart_count = cart_items.count()
     if cart_count <= 0:
@@ -95,7 +96,8 @@ def place_order(request, total=0, quantity=0,):
     grand_total = total + tax
     print('birinchi')
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+     
+        form = OrderForm(request.POST, request.FILES)
         print('ikkinchi')
         if form.is_valid():
             print('uukkinchi')
@@ -138,7 +140,9 @@ def place_order(request, total=0, quantity=0,):
                 'tax': tax,
                 'grand_total': grand_total,
             }     
-            return render(request, 'orders/payments.html', context, {})
+            return render(request, 'orders/payments.html', context)
+        else:
+            print(form.errors)
     else:
         return redirect('carts:checkout')
 
@@ -167,6 +171,6 @@ def order_complete(request):
             'payment': payment,
             'subtotal': subtotal,
         }
-        return render(request, 'orders/order_complete.html', context, {})
+        return render(request, 'orders/order_complete.html', context)
     except (Payment.DoesNotExist, Order.DoesNotExist):
         return redirect('home')

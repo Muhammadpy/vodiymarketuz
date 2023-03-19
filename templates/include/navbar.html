@@ -16,7 +16,7 @@
             </li>
         </ul>
         <ul class="navbar-nav">
-            <li><a href="#" class="nav-link"> <i class="fa fa-envelope"></i> Email </a></li>
+            <li><a href="{{ 'https://mail.google.com' }}" class="nav-link"> <i class="fa fa-envelope"></i> Email </a></li>
             <li><a href="#" class="nav-link"> <i class="fa fa-phone"></i> Call us </a></li>
         </ul> <!-- list-inline //  -->
       </div> <!-- navbar-collapse .// -->
@@ -38,8 +38,7 @@
                 </button>
                 <div class="dropdown-menu">
                  {% for category in links %}
-
-                   
+                 <a class="dropdown-item" href="{{ category.get_url }}">{{ category.category_name }} </a>
                  {% endfor %}
                 </div>
             </div>  <!-- category-wrap.// -->

@@ -32,7 +32,7 @@
                 <div class="card-body">
                     
                     <ul class="list-menu">
-                        <li><a href="{% url 'store' %}">All products </a></li>
+                        <li><a href="{% url 'store:store' %}">All products </a></li>
                     {% for category in links %}
                         <li><a href="{{ category.get_url }}">{{ category.category_name }}  </a></li>
                     {% endfor %}
@@ -159,10 +159,10 @@
 
     </div> <!-- row end.// -->
     
-    
-    <nav class="mt-4" aria-label="Page navigation sample">
+    <div class="text-center">
+    <nav class="mt-4" aria-label="Page navigation sample " align="center">
        {% if products.has_other_pages %}
-      <ul class="pagination">
+      <ul class="pagination" align="center">
         {% if products.has_previous %}
         <li class="page-item "><a class="page-link" href="?page={{ products.previous_page_number}}">Previous</a></li>
         {% else %}
@@ -183,7 +183,7 @@
       </ul>
       {% endif  %}
     </nav> 
-    
+    </div>
         </main> <!-- col.// -->
     
     </div>
